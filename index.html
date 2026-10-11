@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AutoCare Garage - Online Vehicle Service Booking and Cost Estimation System. Academic project for Web Development II (CAT 1).">
+    <title>AutoCare Garage - Vehicle Service Booking & Cost Estimation</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Main Navigation Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand-section">
+                <h1><a href="index.html">AutoCare Garage</a></h1>
+                <p class="tagline">Online Vehicle Service Booking &amp; Cost Estimation System</p>
+            </div>
+            <nav class="main-nav" aria-label="Main Navigation">
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="service.html">Book a Service</a></li>
+                    <li><a href="bookings.php">View Bookings</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <div class="container">
+            <!-- Hero / Welcome Section -->
+            <section class="hero-box" aria-labelledby="hero-heading">
+                <h2 id="hero-heading">Professional Vehicle Care With Transparent Cost Estimation</h2>
+                <p>
+                    Welcome to AutoCare Garage. Our online booking platform allows vehicle owners to select specialized automotive maintenance and repair packages, calculate estimated service costs in real time, and submit instant booking requests.
+                </p>
+                <div class="cta-group">
+                    <a href="service.html" class="btn btn-primary" id="btn-hero-book">Book a Service</a>
+                    <a href="#services-overview" class="btn btn-secondary">View Available Services</a>
+                </div>
+            </section>
+
+            <!-- How It Works Section -->
+            <section class="page-intro" style="border:none; margin-bottom: 20px;">
+                <h2>How The Booking Process Works</h2>
+                <p>Our online system provides end-to-end estimation and appointment confirmation in three simple steps.</p>
+            </section>
+
+            <ol class="process-steps">
+                <li>
+                    <h4>Provide Vehicle Details</h4>
+                    <p>Enter your contact information, vehicle registration number, model, and year of manufacture to receive tailored service recommendations.</p>
+                </li>
+                <li>
+                    <h4>Select Required Services</h4>
+                    <p>Choose from our verified garage service packages. The interactive calculator updates the total estimated cost immediately without refreshing the page.</p>
+                </li>
+                <li>
+                    <h4>Receive Official Confirmation</h4>
+                    <p>Submit your service booking to receive an authoritative server-validated confirmation summary and unique booking reference code.</p>
+                </li>
+            </ol>
+
+            <!-- Services & Standard Rates Section -->
+            <section id="services-overview" style="margin-top: 40px;" aria-labelledby="services-heading">
+                <div class="page-intro">
+                    <h2 id="services-heading">Standard Garage Service Packages</h2>
+                    <p>All service prices are transparently standardized with no hidden labor fees.</p>
+                </div>
+
+                <div class="grid-3col">
+                    <article class="card">
+                        <h3>Engine Oil Change</h3>
+                        <p>Complete engine oil drain and refill with high-grade synthetic oil, oil filter replacement, and fluid level check.</p>
+                        <p class="price-tag">KSh 3,000</p>
+                    </article>
+
+                    <article class="card">
+                        <h3>Brake Inspection</h3>
+                        <p>Detailed examination of brake pads, discs, calipers, brake fluid condition, and hydraulic lines for maximum stopping safety.</p>
+                        <p class="price-tag">KSh 2,000</p>
+                    </article>
+
+                    <article class="card">
+                        <h3>Wheel Alignment</h3>
+                        <p>Four-wheel laser alignment, camber and caster correction, tyre tread inspection, and steering wheel centering.</p>
+                        <p class="price-tag">KSh 3,500</p>
+                    </article>
+
+                    <article class="card">
+                        <h3>Computer Diagnosis</h3>
+                        <p>Full computerized OBD-II electronic diagnostic scanning, engine fault code analysis, sensor tests, and ECU reset.</p>
+                        <p class="price-tag">KSh 2,500</p>
+                    </article>
+
+                    <article class="card">
+                        <h3>Full Service</h3>
+                        <p>Comprehensive multipoint mechanical inspection, engine tune-up, spark plugs, filters, suspension check, and road test.</p>
+                        <p class="price-tag">KSh 8,000</p>
+                    </article>
+
+                    <!-- Individualization Service for Digit 5: CT100/G/24825/24 -->
+                    <article class="card" style="border: 2px solid var(--border-strong);">
+                        <h3>Pickup &amp; Delivery <span class="badge-individual">Assigned Feature</span></h3>
+                        <p>Convenient vehicle collection from your designated location and return upon service completion (Admission No. Digit 5 feature).</p>
+                        <p class="price-tag">KSh 1,500</p>
+                    </article>
+                </div>
+
+                <div style="margin-top: 32px; text-align: center;">
+                    <a href="service.html" class="btn btn-primary" style="padding: 12px 32px; font-size: 15px;">Proceed to Booking Form &amp; Calculator</a>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

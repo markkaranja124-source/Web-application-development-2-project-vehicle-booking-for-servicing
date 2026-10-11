@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AutoCare Garage Service Booking Form and Real-Time Cost Estimator. Select services and submit your vehicle booking.">
+    <title>AutoCare Garage - Service Booking &amp; Cost Estimation</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <a href="#bookingForm" class="skip-link">Skip to booking form</a>
+
+    <!-- Main Navigation Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand-section">
+                <h1><a href="index.html">AutoCare Garage</a></h1>
+                <p class="tagline">Online Vehicle Service Booking &amp; Cost Estimation System</p>
+            </div>
+            <nav class="main-nav" aria-label="Main Navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="service.html" class="active">Book a Service</a></li>
+                    <li><a href="bookings.php">View Bookings</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="page-intro">
+                <h2>Vehicle Service Booking &amp; Cost Estimation</h2>
+                <p>Complete the customer and vehicle profile below, select the required maintenance packages, and review the live estimated total cost before submitting your booking.</p>
+            </div>
+
+            <!-- Client-Side Validation Summary Banner -->
+            <div id="validationSummary" class="error-summary" role="alert" aria-live="assertive" tabindex="-1">
+                <h3>Please Correct The Following Errors:</h3>
+                <ul id="validationSummaryList"></ul>
+            </div>
+
+            <!-- Booking Form and Interactive Calculator Layout -->
+            <div class="booking-layout">
+                <!-- Main Form Column -->
+                <form id="serviceForm" action="process_service.php" method="POST" novalidate>
+                    <!-- Section 1: Customer Details -->
+                    <fieldset class="form-section">
+                        <legend>1. Customer Contact Details</legend>
+                        
+                        <div class="form-row">
+                            <label for="customer_name">Full Name <span class="required-indicator">*</span></label>
+                            <input type="text" id="customer_name" name="customer_name" placeholder="e.g. John Mwangi" required autocomplete="name">
+                            <div id="error-customer_name" class="field-error" role="alert"></div>
+                        </div>
+
+                        <div class="form-row two-fields">
+                            <div>
+                                <label for="phone_number">Phone Number <span class="required-indicator">*</span></label>
+                                <input type="tel" id="phone_number" name="phone_number" placeholder="e.g. 0712345678" maxlength="10" required autocomplete="tel">
+                                <div class="field-help">Must be exactly 10 digits (e.g. 0712345678).</div>
+                                <div id="error-phone_number" class="field-error" role="alert"></div>
+                            </div>
+                            <div>
+                                <label for="email">Email Address <span class="required-indicator">*</span></label>
+                                <input type="email" id="email" name="email" placeholder="e.g. john.mwangi@example.com" required autocomplete="email">
+                                <div class="field-help">Valid email format required for confirmation.</div>
+                                <div id="error-email" class="field-error" role="alert"></div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Section 2: Vehicle Details -->
+                    <fieldset class="form-section">
+                        <legend>2. Vehicle Specifications</legend>
+
+                        <div class="form-row two-fields">
+                            <div>
+                                <label for="registration_number">Registration Number <span class="required-indicator">*</span></label>
+                                <input type="text" id="registration_number" name="registration_number" placeholder="e.g. KDD 123A" style="text-transform: uppercase;" required>
+                                <div class="field-help">Official vehicle registration plate.</div>
+                                <div id="error-registration_number" class="field-error" role="alert"></div>
+                            </div>
+                            <div>
+                                <label for="vehicle_type">Vehicle Type <span class="required-indicator">*</span></label>
+                                <select id="vehicle_type" name="vehicle_type" required>
+                                    <option value="">-- Select Vehicle Category --</option>
+                                    <option value="Saloon Car">Saloon Car</option>
+                                    <option value="SUV">SUV</option>
+                                    <option value="Pickup">Pickup</option>
+                                    <option value="Van">Van</option>
+                                </select>
+                                <div id="error-vehicle_type" class="field-error" role="alert"></div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Vehicle-Type Advisory Information -->
+                        <div id="vehicleTypeInfo" class="info-box" style="display: none;" aria-live="polite">
+                            <strong id="vehicleTypeTitle">Category Advisory</strong>
+                            <span id="vehicleTypeDescription"></span>
+                        </div>
+
+                        <div class="form-row two-fields" style="margin-top: 16px;">
+                            <div>
+                                <label for="vehicle_model">Vehicle Model <span class="required-indicator">*</span></label>
+                                <input type="text" id="vehicle_model" name="vehicle_model" placeholder="e.g. Toyota Fielder" required>
+                                <div id="error-vehicle_model" class="field-error" role="alert"></div>
+                            </div>
+                            <div>
+                                <label for="year_of_manufacture">Year of Manufacture <span class="required-indicator">*</span></label>
+                                <input type="number" id="year_of_manufacture" name="year_of_manufacture" min="1950" max="2026" placeholder="e.g. 2018" required>
+                                <div class="field-help">Between 1950 and present year (2026).</div>
+                                <div id="error-year_of_manufacture" class="field-error" role="alert"></div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Vehicle Age Warning Section -->
+                        <div id="vehicleAgeWarning" class="warning-box" aria-live="polite">
+                            <strong>Vehicle Age Notice:</strong>
+                            <span id="vehicleAgeMessage"></span>
+                        </div>
+
+                        <div class="form-row" style="margin-top: 16px;">
+                            <label for="preferred_date">Preferred Service Date <span class="required-indicator">*</span></label>
+                            <input type="date" id="preferred_date" name="preferred_date" required>
+                            <div class="field-help">Appointment date cannot be in the past.</div>
+                            <div id="error-preferred_date" class="field-error" role="alert"></div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Section 3: Service Selection -->
+                    <fieldset class="form-section">
+                        <legend>3. Service Packages &amp; Add-ons</legend>
+                        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">
+                            Select one or more services from the list below. The live calculator automatically compiles your estimated cost.
+                        </p>
+                        <div id="error-services" class="field-error" role="alert" style="margin-bottom: 12px;"></div>
+
+                        <table class="services-selection-table" aria-label="Available services list">
+                            <thead>
+                                <tr>
+                                    <th class="col-checkbox">Select</th>
+                                    <th>Service Description</th>
+                                    <th class="col-price">Base Charge</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="col-checkbox">
+                                        <input type="checkbox" id="svc_oil_change" name="services[]" value="oil_change" data-name="Engine Oil Change" data-price="3000">
+                                    </td>
+                                    <td>
+                                        <label for="svc_oil_change" style="margin: 0; cursor: pointer;">
+                                            <strong>Engine Oil Change</strong><br>
+                                            <span style="font-size: 13px; color: var(--text-secondary);">Drain, replace filter, and refill synthetic motor oil.</span>
+                                        </label>
+                                    </td>
+                                    <td class="col-price">KSh 3,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-checkbox">
+                                        <input type="checkbox" id="svc_brake_inspection" name="services[]" value="brake_inspection" data-name="Brake Inspection" data-price="2000">
+                                    </td>
+                                    <td>
+                                        <label for="svc_brake_inspection" style="margin: 0; cursor: pointer;">
+                                            <strong>Brake Inspection</strong><br>
+                                            <span style="font-size: 13px; color: var(--text-secondary);">Full inspection of calipers, pads, discs, lines, and fluid.</span>
+                                        </label>
+                                    </td>
+                                    <td class="col-price">KSh 2,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-checkbox">
+                                        <input type="checkbox" id="svc_wheel_alignment" name="services[]" value="wheel_alignment" data-name="Wheel Alignment" data-price="3500">
+                                    </td>
+                                    <td>
+                                        <label for="svc_wheel_alignment" style="margin: 0; cursor: pointer;">
+                                            <strong>Wheel Alignment</strong><br>
+                                            <span style="font-size: 13px; color: var(--text-secondary);">Precision 4-wheel computerized tracking and camber balancing.</span>
+                                        </label>
+                                    </td>
+                                    <td class="col-price">KSh 3,500</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-checkbox">
+                                        <input type="checkbox" id="svc_computer_diagnosis" name="services[]" value="computer_diagnosis" data-name="Computer Diagnosis" data-price="2500">
+                                    </td>
+                                    <td>
+                                        <label for="svc_computer_diagnosis" style="margin: 0; cursor: pointer;">
+                                            <strong>Computer Diagnosis</strong><br>
+                                            <span style="font-size: 13px; color: var(--text-secondary);">OBD-II engine and electrical diagnostics with code scan report.</span>
+                                        </label>
+                                    </td>
+                                    <td class="col-price">KSh 2,500</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-checkbox">
+                                        <input type="checkbox" id="svc_full_service" name="services[]" value="full_service" data-name="Full Service" data-price="8000">
+                                    </td>
+                                    <td>
+                                        <label for="svc_full_service" style="margin: 0; cursor: pointer;">
+                                            <strong>Full Service</strong><br>
+                                            <span style="font-size: 13px; color: var(--text-secondary);">Comprehensive maintenance tune-up, spark plugs, filters, and road test.</span>
+                                        </label>
+                                    </td>
+                                    <td class="col-price">KSh 8,000</td>
+                                </tr>
+
+                                <!-- Admission Number Individualization Feature: Digit 5 (CT100/G/24825/24) -->
+                                <tr>
+                                    <td class="col-checkbox">
+                                        <input type="checkbox" id="svc_pickup_delivery" name="services[]" value="pickup_delivery" data-name="Vehicle Pickup and Delivery" data-price="1500">
+                                    </td>
+                                    <td>
+                                        <label for="svc_pickup_delivery" style="margin: 0; cursor: pointer;">
+                                            <strong>Vehicle Pickup and Delivery</strong> 
+                                            <span class="badge-individual">Assigned Rule (Digit 5)</span><br>
+                                            <span style="font-size: 13px; color: var(--text-secondary);">Convenient vehicle collection and drop-off to your doorstep.</span>
+                                        </label>
+                                    </td>
+                                    <td class="col-price">KSh 1,500</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+
+                    <!-- Form Action Buttons -->
+                    <div class="form-actions">
+                        <button type="submit" id="btnSubmitBooking" class="btn btn-primary">Submit Service Request</button>
+                        <button type="reset" id="btnResetForm" class="btn btn-reset">Reset Form</button>
+                    </div>
+                </form>
+
+                <!-- Live Dynamic Cost Calculator Sidebar -->
+                <aside class="calculator-panel" aria-label="Live Cost Estimation Panel">
+                    <h3>Booking Summary</h3>
+                    
+                    <div class="summary-meta-item">
+                        <span class="label">Vehicle Category:</span>
+                        <span id="summaryVehicleType" class="value">Not specified</span>
+                    </div>
+
+                    <div class="summary-meta-item">
+                        <span class="label">Vehicle Age:</span>
+                        <span id="summaryVehicleAge" class="value">Not calculated</span>
+                    </div>
+
+                    <div class="summary-meta-item">
+                        <span class="label">Services Selected:</span>
+                        <span id="serviceCount" class="value">0</span>
+                    </div>
+
+                    <div class="selected-list-container">
+                        <h4>Selected Items Breakdown:</h4>
+                        <ul id="selectedServicesList" class="selected-services-list">
+                            <li class="empty-notice">No services selected yet. Please check one or more services.</li>
+                        </ul>
+                    </div>
+
+                    <div class="total-box">
+                        <div class="total-label">Estimated Service Total:</div>
+                        <div id="totalCostDisplay" class="total-amount">KSh 0</div>
+                        <div class="field-help" style="margin-top: 6px;">
+                            * Costs are subject to final server verification upon submission.
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Client-side JavaScript -->
+    <script src="js/script.js"></script>
+</body>
+</html>
